@@ -1,0 +1,2047 @@
+@prefix hpo:  <http://kg.example.com/harrypotter-oop/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc:   <http://purl.org/dc/elements/1.1/> .
+
+hpo:HarryPotterOoPOntology a owl:Ontology ;
+    dc:title "哈利·波特与凤凰社知识图谱本体"@zh ;
+    dc:description "基于《哈利·波特与凤凰社》全文的人物关系知识图谱本体。6类顶层实体（人物/组织/地点/物品/事件/作品），33个二级子类，16类对象属性，16个数据属性（v1.3 修复了 30→16 的数据属性膨胀问题，补全 alias 定义、加 domain 限制、删重复与未用属性）。"@zh ;
+    owl:versionInfo "1.3" .
+
+# ============================================================
+# 顶层类（6 大类）
+# ============================================================
+
+hpo:Person a owl:Class ;
+    rdfs:label "人物"@zh ;
+    rdfs:comment "凤凰社知识图谱中的人物实体，含巫师/麻瓜/家养小精灵/马人/巨人/鬼魂等子类"@zh .
+
+hpo:Organization a owl:Class ;
+    rdfs:label "组织"@zh ;
+    rdfs:comment "凤凰社知识图谱中的组织实体，含学校/学院/犯罪组织/魔法机构/社团等子类"@zh .
+
+hpo:Place a owl:Class ;
+    rdfs:label "地点"@zh ;
+    rdfs:comment "凤凰社知识图谱中的地点实体，含住宅/学校建筑/公共场所/魔法地点等子类"@zh .
+
+hpo:Item a owl:Class ;
+    rdfs:label "物品"@zh ;
+    rdfs:comment "凤凰社知识图谱中的物品实体，含信物/魔法器物/门钥匙/其他等子类"@zh .
+
+hpo:Event a owl:Class ;
+    rdfs:label "事件"@zh ;
+    rdfs:comment "凤凰社知识图谱中的事件实体，含战斗/审判/集会/考试/袭击/其他事件等子类"@zh .
+
+hpo:Work a owl:Class ;
+    rdfs:label "作品"@zh ;
+    rdfs:comment "凤凰社知识图谱中的作品实体，含书籍/教科书/刊物/报道/信件/传单/其他作品等子类"@zh .
+
+# ============================================================
+# 人物子类（7 个）
+# ============================================================
+
+hpo:Wizard a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "巫师"@zh ;
+    rdfs:comment "具有魔法能力的人物，包括纯血、混血、麻瓜出身"@zh .
+
+hpo:Muggle a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "麻瓜"@zh ;
+    rdfs:comment "没有魔法能力的普通人类"@zh .
+
+hpo:HouseElf a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "家养小精灵"@zh ;
+    rdfs:comment "魔法界特有的魔法生物，世代服务于巫师家族"@zh .
+
+hpo:Centaur a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "马人"@zh ;
+    rdfs:comment "上半身为人、下半身为马的魔法生物"@zh .
+
+hpo:Giant a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "巨人"@zh ;
+    rdfs:comment "体型巨大的魔法生物"@zh .
+
+hpo:Ghost a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "鬼魂"@zh ;
+    rdfs:comment "人类死亡后留下的灵魂形态"@zh .
+
+hpo:OtherMagicalCreature a owl:Class ;
+    rdfs:subClassOf hpo:Person ;
+    rdfs:label "其他魔法生物"@zh ;
+    rdfs:comment "其他无法归入上述子类的人物型魔法生物"@zh .
+
+# ============================================================
+# 组织子类（5 个）
+# ============================================================
+
+hpo:School a owl:Class ;
+    rdfs:subClassOf hpo:Organization ;
+    rdfs:label "学校"@zh ;
+    rdfs:comment "魔法教育机构，如霍格沃茨"@zh .
+
+hpo:Academy a owl:Class ;
+    rdfs:subClassOf hpo:Organization ;
+    rdfs:label "学院"@zh ;
+    rdfs:comment "学校内的分院组织，如格兰芬多、斯莱特林"@zh .
+
+hpo:CriminalOrganization a owl:Class ;
+    rdfs:subClassOf hpo:Organization ;
+    rdfs:label "犯罪组织"@zh ;
+    rdfs:comment "以犯罪为目的的组织，如食死徒、阿兹卡班"@zh .
+
+hpo:MagicalInstitution a owl:Class ;
+    rdfs:subClassOf hpo:Organization ;
+    rdfs:label "魔法机构"@zh ;
+    rdfs:comment "魔法部、傲罗办公室、圣芒戈等政府或公共服务机构"@zh .
+
+hpo:Club a owl:Class ;
+    rdfs:subClassOf hpo:Organization ;
+    rdfs:label "社团"@zh ;
+    rdfs:comment "以共同目标或兴趣组成的非正式团体，如凤凰社、邓布利多军"@zh .
+
+# ============================================================
+# 地点子类（4 个，原 House 重命名为 Place）
+# ============================================================
+
+hpo:Residence a owl:Class ;
+    rdfs:subClassOf hpo:Place ;
+    rdfs:label "住宅"@zh ;
+    rdfs:comment "人物居住的房屋，如陋居、格里莫广场12号、女贞路4号"@zh .
+
+hpo:BuildingInSchool a owl:Class ;
+    rdfs:subClassOf hpo:Place ;
+    rdfs:label "学校建筑"@zh ;
+    rdfs:comment "霍格沃茨内的建筑与场所，如霍格沃茨城堡、格兰芬多公共休息室、邓布利多办公室"@zh .
+
+hpo:PublicPlace a owl:Class ;
+    rdfs:subClassOf hpo:Place ;
+    rdfs:label "公共场所"@zh ;
+    rdfs:comment "面向公众开放或服务于大众的场所，如对角巷、霍格莫德村、车站"@zh .
+
+hpo:MagicalLocation a owl:Class ;
+    rdfs:subClassOf hpo:Place ;
+    rdfs:label "魔法地点"@zh ;
+    rdfs:comment "具有特殊魔法属性或仅存在于魔法世界的地点，如禁林、神秘事务司、有求必应屋"@zh .
+
+# ============================================================
+# 物品子类（6 个）
+# ============================================================
+
+hpo:Token a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "信物"@zh ;
+    rdfs:comment "具有重要象征意义或纪念价值的物品"@zh .
+
+hpo:MagicalArtifact a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "魔法器物"@zh ;
+    rdfs:comment "具有魔法功能的器物，如预言球、隐形衣、守护神"@zh .
+
+hpo:Portkey a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "门钥匙"@zh ;
+    rdfs:comment "用于空间瞬移的魔法物品"@zh .
+
+hpo:Wand a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "魔杖"@zh ;
+    rdfs:comment "巫师施放魔法的工具（凤凰社卷未抽出具体魔杖实例）"@zh .
+
+hpo:Potion a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "药水"@zh ;
+    rdfs:comment "具有特定魔药效果的液体（凤凰社卷未抽出具体药水实例）"@zh .
+
+hpo:Weapon a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "武器"@zh ;
+    rdfs:comment "用于攻击或防御的武器"@zh .
+
+hpo:OtherItem a owl:Class ;
+    rdfs:subClassOf hpo:Item ;
+    rdfs:label "其他物品"@zh ;
+    rdfs:comment "无法归入上述子类的物品，如宠物（海德薇）、饮料（黄油啤酒）、棋类"@zh .
+
+# ============================================================
+# 事件子类（6 个）
+# ============================================================
+
+hpo:Battle a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "战斗"@zh ;
+    rdfs:comment "涉及冲突或武力的对抗事件"@zh .
+
+hpo:Trial a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "审判"@zh ;
+    rdfs:comment "威森加摩等机构的司法审判事件"@zh .
+
+hpo:Gathering a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "集会"@zh ;
+    rdfs:comment "多人聚集的社交或会议事件"@zh .
+
+hpo:Examination a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "考试"@zh ;
+    rdfs:comment "O.W.L.、N.E.W.T.等学术考试事件"@zh .
+
+hpo:Attack a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "袭击"@zh ;
+    rdfs:comment "针对个人或机构的突然攻击事件"@zh .
+
+hpo:OtherEvent a owl:Class ;
+    rdfs:subClassOf hpo:Event ;
+    rdfs:label "其他事件"@zh ;
+    rdfs:comment "无法归入上述子类的事件，如教育令颁布、人物任命/解雇"@zh .
+
+# ============================================================
+# 作品子类（7 个）
+# ============================================================
+
+hpo:Book a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "书籍"@zh ;
+    rdfs:comment "成册的书籍类作品"@zh .
+
+hpo:Textbook a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "教科书"@zh ;
+    rdfs:comment "用于教学的教科书"@zh .
+
+hpo:Periodical a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "刊物"@zh ;
+    rdfs:comment "定期发行的刊物，如预言家日报、唱唱反调"@zh .
+
+hpo:Report a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "报道"@zh ;
+    rdfs:comment "新闻报道或专访，如《独家采访哈利·波特》"@zh .
+
+hpo:Letter a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "信件"@zh ;
+    rdfs:comment "书信类作品（凤凰社卷未抽出信件实例）"@zh .
+
+hpo:Flyer a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "传单"@zh ;
+    rdfs:comment "宣传或通告类单页作品（凤凰社卷未抽出传单实例）"@zh .
+
+hpo:OtherWork a owl:Class ;
+    rdfs:subClassOf hpo:Work ;
+    rdfs:label "其他作品"@zh ;
+    rdfs:comment "无法归入上述子类的作品，如教育令、法律文本、官方文件"@zh .
+
+# ============================================================
+# 对象属性（关系）—— 顶层 16 类
+# ============================================================
+
+hpo:hasFamilyRelation a owl:ObjectProperty ;
+    rdfs:label "亲属关系"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Person .
+
+hpo:hasMentorRelation a owl:ObjectProperty ;
+    rdfs:label "师生关系"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Person .
+
+hpo:hasFriendRelation a owl:ObjectProperty ;
+    rdfs:label "朋友关系"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Person .
+
+hpo:hasEnemyRelation a owl:ObjectProperty ;
+    rdfs:label "敌对关系"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Organization .
+
+hpo:hasLoveRelation a owl:ObjectProperty ;
+    rdfs:label "恋人关系"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Person .
+
+hpo:memberOf a owl:ObjectProperty ;
+    rdfs:label "组织成员"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Organization .
+
+hpo:leads a owl:ObjectProperty ;
+    rdfs:label "领导"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Organization .
+
+hpo:opposes a owl:ObjectProperty ;
+    rdfs:label "对抗"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Organization .
+
+hpo:supports a owl:ObjectProperty ;
+    rdfs:label "支持"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Organization .
+
+hpo:controls a owl:ObjectProperty ;
+    rdfs:label "管控"@zh ;
+    rdfs:domain hpo:Organization ;
+    rdfs:range hpo:Organization .
+
+hpo:livesIn a owl:ObjectProperty ;
+    rdfs:label "居住"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Place .
+
+hpo:visits a owl:ObjectProperty ;
+    rdfs:label "造访"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Place .
+
+hpo:owns a owl:ObjectProperty ;
+    rdfs:label "拥有"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Item .
+
+hpo:uses a owl:ObjectProperty ;
+    rdfs:label "使用"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Item .
+
+hpo:participatesIn a owl:ObjectProperty ;
+    rdfs:label "参与"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range hpo:Event .
+
+hpo:precedes a owl:ObjectProperty ;
+    rdfs:label "发生于…之前"@zh ;
+    rdfs:domain hpo:Event ;
+    rdfs:range hpo:Event .
+
+hpo:leadsTo a owl:ObjectProperty ;
+    rdfs:label "导致"@zh ;
+    rdfs:domain hpo:Event ;
+    rdfs:range hpo:Event .
+
+# 对象属性的子属性
+hpo:isParentOf a owl:ObjectProperty ;
+    rdfs:label "是…的父母"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:isChildOf a owl:ObjectProperty ;
+    rdfs:label "是…的子女"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:isSiblingOf a owl:ObjectProperty ;
+    rdfs:label "是…的兄弟姐妹"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:isUncleAuntOf a owl:ObjectProperty ;
+    rdfs:label "是…的叔伯/阿姨"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:isCousinOf a owl:ObjectProperty ;
+    rdfs:label "是…的表亲"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:isGodfatherOf a owl:ObjectProperty ;
+    rdfs:label "是…的教父"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:teaches a owl:ObjectProperty ;
+    rdfs:label "教授"@zh ;
+    rdfs:subPropertyOf hpo:hasMentorRelation .
+
+hpo:trainedBy a owl:ObjectProperty ;
+    rdfs:label "受训于"@zh ;
+    rdfs:subPropertyOf hpo:hasMentorRelation .
+
+hpo:isHeadOf a owl:ObjectProperty ;
+    rdfs:label "是…的负责人"@zh ;
+    rdfs:subPropertyOf hpo:hasMentorRelation .
+
+hpo:studiesAt a owl:ObjectProperty ;
+    rdfs:label "就读于"@zh ;
+    rdfs:subPropertyOf hpo:hasMentorRelation .
+
+hpo:fightsFor a owl:ObjectProperty ;
+    rdfs:label "为…战斗"@zh ;
+    rdfs:subPropertyOf hpo:memberOf .
+
+hpo:worksFor a owl:ObjectProperty ;
+    rdfs:label "为…工作"@zh ;
+    rdfs:subPropertyOf hpo:memberOf .
+
+hpo:hasKeyRole a owl:ObjectProperty ;
+    rdfs:label "在…中担任关键角色"@zh ;
+    rdfs:subPropertyOf hpo:memberOf .
+
+hpo:hasHome a owl:ObjectProperty ;
+    rdfs:label "家在"@zh ;
+    rdfs:subPropertyOf hpo:livesIn .
+
+hpo:hasSchoolDorm a owl:ObjectProperty ;
+    rdfs:label "学校宿舍在"@zh ;
+    rdfs:subPropertyOf hpo:livesIn .
+
+hpo:hasWorkResidence a owl:ObjectProperty ;
+    rdfs:label "工作住所"@zh ;
+    rdfs:subPropertyOf hpo:livesIn .
+
+hpo:ownsPet a owl:ObjectProperty ;
+    rdfs:label "拥有宠物"@zh ;
+    rdfs:subPropertyOf hpo:owns .
+
+hpo:ownsHeirloom a owl:ObjectProperty ;
+    rdfs:label "拥有传家宝"@zh ;
+    rdfs:subPropertyOf hpo:owns .
+
+hpo:ownsBroom a owl:ObjectProperty ;
+    rdfs:label "拥有飞天扫帚"@zh ;
+    rdfs:subPropertyOf hpo:owns .
+
+hpo:ownsToy a owl:ObjectProperty ;
+    rdfs:label "拥有玩具"@zh ;
+    rdfs:subPropertyOf hpo:owns .
+
+hpo:usesMagic a owl:ObjectProperty ;
+    rdfs:label "使用魔法器物"@zh ;
+    rdfs:subPropertyOf hpo:uses .
+
+hpo:usesDrink a owl:ObjectProperty ;
+    rdfs:label "饮用"@zh ;
+    rdfs:subPropertyOf hpo:uses .
+
+hpo:inPainting a owl:ObjectProperty ;
+    rdfs:label "画中人居住在"@zh ;
+    rdfs:subPropertyOf hpo:livesIn .
+
+hpo:isNeighborOf a owl:ObjectProperty ;
+    rdfs:label "是…的邻居"@zh ;
+    rdfs:subPropertyOf hpo:hasFamilyRelation .
+
+hpo:hasTemporaryRelation a owl:ObjectProperty ;
+    rdfs:label "临时关系"@zh .
+
+# ============================================================
+# 数据属性（v1.3 修复）
+#
+# 修复说明（v1.2 → v1.3）：
+#   1. 补上 hpo:alias 定义（实例用了 205 次，原 v1.2 本体漏定义）
+#   2. 给所有数据属性加 rdfs:domain（v1.2 全缺失，破坏本体约束）
+#   3. 删除重复属性：hasConfidence / hasVoteCount / isKnownPair /
+#      isFromPrior / hasChapter / hasChapterEnd（语义与 confidence /
+#      nVotes / isPriorPair / firstAppearChapter 等重叠）
+#   4. 删除错误属性 hasObject（自称 blank node 内但 range 标 anyURI，
+#      自相矛盾，实际不应作为数据属性存在）
+#   5. 删除 8 个定义但实例未使用的过度细化属性：
+#      eventType / keyParticipant / itemType / workType /
+#      contentSummary / placeType / location / occurPlace
+#   6. 保留 4 个跨卷可能复用的核心预留属性（命名规范、语义独立）：
+#      wandMaterial / patronus / status / leader
+#   7. 给所有数据属性加 rdfs:comment
+#   8. 关系元数据属性（confidence/nVotes/isPriorPair/evidenceChapter）
+#      通过 blank node 挂到三元组实例上（不直接挂在实体上）
+#
+# 数量：30 → 16（精简 47%）
+# 实体核心属性 7 + 实体预留属性 4 + 关系元数据属性 4 + 通用统计属性 1 = 16
+# （chapterCount / firstAppearChapter 属于通用统计，对所有顶层类适用）
+# ============================================================
+
+# ---------- 人物属性（7 个，核心 5 + 预留 2）----------
+
+hpo:alias a owl:DatatypeProperty ;
+    rdfs:label "别名"@zh ;
+    rdfs:comment "人物或实体的其他称呼、中文昵称、英文原名等。同一个实例可有多个 alias。"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range xsd:string .
+
+hpo:house a owl:DatatypeProperty ;
+    rdfs:label "所属学院"@zh ;
+    rdfs:comment "霍格沃茨四学院之一：格兰芬多 / 斯莱特林 / 拉文克劳 / 赫奇帕奇。仅巫师实例使用。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:string .
+
+hpo:bloodStatus a owl:DatatypeProperty ;
+    rdfs:label "血统"@zh ;
+    rdfs:comment "巫师血统：纯血 / 混血 / 麻瓜出身。仅巫师实例使用。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:string .
+
+hpo:identity a owl:DatatypeProperty ;
+    rdfs:label "身份/职业"@zh ;
+    rdfs:comment "人物在社会中的角色，如学生、教师、记者、傲罗、食死徒、店主等。仅巫师实例使用。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:string .
+
+hpo:isOrderMember a owl:DatatypeProperty ;
+    rdfs:label "是否凤凰社成员"@zh ;
+    rdfs:comment "布尔值，标识该人物是否为凤凰社成员。仅巫师实例使用。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:boolean .
+
+hpo:wandMaterial a owl:DatatypeProperty ;
+    rdfs:label "魔杖材质"@zh ;
+    rdfs:comment "巫师魔杖的核心材质（如凤凰羽毛、独角兽尾毛、龙心腱等）。凤凰社卷未抽出具体实例，预留给后续卷。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:string .
+
+hpo:patronus a owl:DatatypeProperty ;
+    rdfs:label "守护神形态"@zh ;
+    rdfs:comment "巫师的守护神咒所呈现的具体动物形态（如牡鹿、牝猫、水獭等）。凤凰社卷未抽出具体实例，预留给后续卷。"@zh ;
+    rdfs:domain hpo:Wizard ;
+    rdfs:range xsd:string .
+
+# ---------- 组织属性（1 个，预留）----------
+
+hpo:leader a owl:DatatypeProperty ;
+    rdfs:label "领导者"@zh ;
+    rdfs:comment "组织的核心领导者姓名（凤凰社为邓布利多，食死徒为伏地魔，DA 为哈利）。凤凰社卷未抽出具体实例，预留给后续卷。"@zh ;
+    rdfs:domain hpo:Organization ;
+    rdfs:range xsd:string .
+
+# ---------- 通用统计属性（2 个，所有顶层类共有）----------
+
+hpo:status a owl:DatatypeProperty ;
+    rdfs:label "生死/活跃状态"@zh ;
+    rdfs:comment "实体在小说当前卷中的状态：alive（存活）/ dead（已故）/ active（活跃）/ defunct（已解散）等。凤凰社卷未抽出具体实例，预留给后续卷。"@zh ;
+    rdfs:domain hpo:Person ;
+    rdfs:range xsd:string .
+
+hpo:chapterCount a owl:DatatypeProperty ;
+    rdfs:label "出现章节数"@zh ;
+    rdfs:comment "该实体在原文中出现的章节数（去重后的统计值）。设计为可挂在任何 owl:Thing 上，实例中所有顶层类（人物/组织/地点/物品/事件/作品）共用。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+hpo:firstAppearChapter a owl:DatatypeProperty ;
+    rdfs:label "首次出场章节"@zh ;
+    rdfs:comment "该实体在原文中首次被提及的章节号（1-38）。设计为可挂在任何 owl:Thing 上，实例中所有顶层类共用。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+# ---------- 关系元数据属性（4 个，挂在三元组 blank node 上）----------
+#
+# 这些属性描述三元组（关系事实）本身的可信度，不描述实体特征。
+# 在 RDF 中通过 blank node 挂到关系实例上，例如：
+#   hpo:哈利_波特 hpo:isParentOf [
+#       hpo:target hpo:詹姆_波特 ;
+#       hpo:confidence "0.95"^^xsd:double ;
+#       hpo:nVotes "3"^^xsd:integer ;
+#       hpo:isPriorPair "true"^^xsd:boolean ;
+#       hpo:evidenceChapter "5"^^xsd:integer
+#   ] .
+
+hpo:confidence a owl:DatatypeProperty ;
+    rdfs:label "置信度"@zh ;
+    rdfs:comment "三元组（关系事实）的抽取置信度，0~1 之间。三模型投票后归一化得分。设计为挂在关系 blank node 上（domain 设为 owl:Thing 兼容）。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:double .
+
+hpo:nVotes a owl:DatatypeProperty ;
+    rdfs:label "模型投票数"@zh ;
+    rdfs:comment "支持该三元组（关系事实）的模型数量（1-3）。实体侧 3 模型并行 + 投票；1 表示仅一个模型支持。挂在关系 blank node 上。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+hpo:isPriorPair a owl:DatatypeProperty ;
+    rdfs:label "是否先验种子对"@zh ;
+    rdfs:comment "布尔值，标识该关系是否来自先验种子表（如凤凰社首批成员-邓布利多、食死徒-伏地魔等强先验对）。挂在关系 blank node 上。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:boolean .
+
+hpo:evidenceChapter a owl:DatatypeProperty ;
+    rdfs:label "证据章节"@zh ;
+    rdfs:comment "三元组（关系事实）的关键证据所在章节号。挂在关系 blank node 上。"@zh ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+
+@prefix hp:   <http://kg.example.com/harrypotter-oop/entity/> .
+@prefix hpo:  <http://kg.example.com/harrypotter-oop/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ===== 实体实例（v1.2 — 实例已归到最具体子类）=====
+
+# === Wizard（63 个实例）===
+
+hp:丽塔_斯基特
+    a hpo:Wizard ;
+    rdfs:label "丽塔·斯基特"@zh ;
+    hpo:alias "丽塔"@zh ;
+    hpo:alias "斯基特"@zh ;
+    hpo:identity "记者"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:乔治_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "乔治·韦斯莱"@zh ;
+    hpo:alias "乔治"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "27"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:亚瑟_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "亚瑟·韦斯莱"@zh ;
+    hpo:alias "韦斯莱先生"@zh ;
+    hpo:alias "亚瑟"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "魔法部职员/凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "18"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+hp:伏地魔
+    a hpo:Wizard ;
+    rdfs:label "伏地魔"@zh ;
+    hpo:alias "神秘人"@zh ;
+    hpo:alias "汤姆·里德尔"@zh ;
+    hpo:alias "黑魔王"@zh ;
+    hpo:alias "汤姆"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "食死徒首领"@zh ;
+    hpo:chapterCount "30"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:克拉布
+    a hpo:Wizard ;
+    rdfs:label "克拉布"@zh ;
+    hpo:house "斯莱特林"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "13"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:卢修斯_马尔福
+    a hpo:Wizard ;
+    rdfs:label "卢修斯·马尔福"@zh ;
+    hpo:alias "老马尔福"@zh ;
+    hpo:alias "马尔福先生"@zh ;
+    hpo:alias "卢修斯"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "食死徒"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:卢娜_洛夫古德
+    a hpo:Wizard ;
+    rdfs:label "卢娜·洛夫古德"@zh ;
+    hpo:alias "卢娜"@zh ;
+    hpo:alias "洛夫古德"@zh ;
+    hpo:house "拉文克劳"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "17"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:厄尼_麦克米兰
+    a hpo:Wizard ;
+    rdfs:label "厄尼·麦克米兰"@zh ;
+    hpo:alias "厄尼"@zh ;
+    hpo:house "赫奇帕奇"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:哈利_波特
+    a hpo:Wizard ;
+    rdfs:label "哈利·波特"@zh ;
+    hpo:alias "哈利"@zh ;
+    hpo:alias "Harry"@zh ;
+    hpo:alias "波特先生"@zh ;
+    hpo:alias "哈利·波特"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:isOrderMember "false"^^xsd:boolean ;
+    hpo:chapterCount "38"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:埃尔法亚斯_多吉
+    a hpo:Wizard ;
+    rdfs:label "埃尔法亚斯·多吉"@zh ;
+    hpo:alias "多吉"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:埃米琳_万斯
+    a hpo:Wizard ;
+    rdfs:label "埃米琳·万斯"@zh ;
+    hpo:alias "万斯"@zh ;
+    hpo:alias "埃米琳"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:多洛雷斯_乌姆里奇
+    a hpo:Wizard ;
+    rdfs:label "多洛雷斯·乌姆里奇"@zh ;
+    hpo:alias "乌姆里奇教授"@zh ;
+    hpo:alias "乌姆里奇女士"@zh ;
+    hpo:alias "多洛雷斯"@zh ;
+    hpo:alias "乌姆里奇"@zh ;
+    hpo:identity "教师/魔法部高级副部长/高级调查官"@zh ;
+    hpo:chapterCount "27"^^xsd:integer ;
+    hpo:firstAppearChapter "8"^^xsd:integer .
+
+hp:威廉敏娜_格拉普兰
+    a hpo:Wizard ;
+    rdfs:label "威廉敏娜·格拉普兰"@zh ;
+    hpo:alias "格拉普兰"@zh ;
+    hpo:alias "格拉普兰教授"@zh ;
+    hpo:identity "教师（保健课代课）"@zh ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:安东宁_多洛霍夫
+    a hpo:Wizard ;
+    rdfs:label "安东宁·多洛霍夫"@zh ;
+    hpo:alias "多洛霍夫"@zh ;
+    hpo:identity "食死徒"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "25"^^xsd:integer .
+
+hp:小天狼星布莱克
+    a hpo:Wizard ;
+    rdfs:label "小天狼星布莱克"@zh ;
+    hpo:alias "小天狼星"@zh ;
+    hpo:alias "大脚板"@zh ;
+    hpo:alias "布莱克"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "33"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:尼法朵拉_唐克斯
+    a hpo:Wizard ;
+    rdfs:label "尼法朵拉·唐克斯"@zh ;
+    hpo:alias "唐克斯"@zh ;
+    hpo:alias "尼法朵拉"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "傲罗/凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:巴蒂_克劳奇
+    a hpo:Wizard ;
+    rdfs:label "巴蒂·克劳奇"@zh ;
+    hpo:alias "克劳奇"@zh ;
+    hpo:identity "魔法部官员（已故）"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:帕瓦蒂_佩蒂尔
+    a hpo:Wizard ;
+    rdfs:label "帕瓦蒂·佩蒂尔"@zh ;
+    hpo:alias "帕瓦蒂"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:庞弗雷夫人
+    a hpo:Wizard ;
+    rdfs:label "庞弗雷夫人"@zh ;
+    hpo:alias "庞弗雷夫人"@zh ;
+    hpo:alias "庞弗雷"@zh ;
+    hpo:identity "校医"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "19"^^xsd:integer .
+
+hp:康奈利_福吉
+    a hpo:Wizard ;
+    rdfs:label "康奈利·福吉"@zh ;
+    hpo:alias "福吉"@zh ;
+    hpo:alias "康奈利"@zh ;
+    hpo:identity "魔法部部长"@zh ;
+    hpo:chapterCount "20"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:弗雷德_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "弗雷德·韦斯莱"@zh ;
+    hpo:alias "弗雷德"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "27"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:彼得_佩蒂格鲁
+    a hpo:Wizard ;
+    rdfs:label "彼得·佩蒂格鲁"@zh ;
+    hpo:alias "小矮星彼得"@zh ;
+    hpo:alias "虫尾巴"@zh ;
+    hpo:alias "佩蒂格鲁"@zh ;
+    hpo:identity "食死徒"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "5"^^xsd:integer .
+
+hp:德拉科_马尔福
+    a hpo:Wizard ;
+    rdfs:label "德拉科·马尔福"@zh ;
+    hpo:alias "德拉科"@zh ;
+    hpo:alias "小马尔福"@zh ;
+    hpo:house "斯莱特林"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "15"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:扎卡赖斯_史密斯
+    a hpo:Wizard ;
+    rdfs:label "扎卡赖斯·史密斯"@zh ;
+    hpo:alias "扎卡赖斯"@zh ;
+    hpo:house "赫奇帕奇"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "7"^^xsd:integer ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:托福迪教授
+    a hpo:Wizard ;
+    rdfs:label "托福迪教授"@zh ;
+    hpo:alias "托福迪"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "31"^^xsd:integer .
+
+hp:拉文德_布朗
+    a hpo:Wizard ;
+    rdfs:label "拉文德·布朗"@zh ;
+    hpo:alias "拉文德"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:斯特吉斯_波德摩
+    a hpo:Wizard ;
+    rdfs:label "斯特吉斯·波德摩"@zh ;
+    hpo:alias "斯特吉斯"@zh ;
+    hpo:alias "波德摩"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:李_乔丹
+    a hpo:Wizard ;
+    rdfs:label "李·乔丹"@zh ;
+    hpo:alias "李"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "20"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:查理_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "查理·韦斯莱"@zh ;
+    hpo:alias "查理"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:格里塞尔达_玛奇班
+    a hpo:Wizard ;
+    rdfs:label "格里塞尔达·玛奇班"@zh ;
+    hpo:alias "玛奇班"@zh ;
+    hpo:alias "玛奇班教授"@zh ;
+    hpo:identity "O.W.L.考官"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "15"^^xsd:integer .
+
+hp:比尔_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "比尔·韦斯莱"@zh ;
+    hpo:alias "比尔"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:汉娜_艾博
+    a hpo:Wizard ;
+    rdfs:label "汉娜·艾博"@zh ;
+    hpo:alias "汉娜"@zh ;
+    hpo:house "赫奇帕奇"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "7"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:波莫娜_斯普劳特
+    a hpo:Wizard ;
+    rdfs:label "波莫娜·斯普劳特"@zh ;
+    hpo:alias "斯普劳特"@zh ;
+    hpo:alias "斯普劳特教授"@zh ;
+    hpo:house "赫奇帕奇"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:潘西_帕金森
+    a hpo:Wizard ;
+    rdfs:label "潘西·帕金森"@zh ;
+    hpo:alias "潘西"@zh ;
+    hpo:house "斯莱特林"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:珀西_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "珀西·韦斯莱"@zh ;
+    hpo:alias "珀西"@zh ;
+    hpo:alias "帕西瓦尔"@zh ;
+    hpo:alias "珀西瓦尔"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "魔法部职员"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:瓦尔布加_布莱克
+    a hpo:Wizard ;
+    rdfs:label "瓦尔布加·布莱克"@zh ;
+    hpo:alias "布莱克夫人"@zh ;
+    hpo:alias "布莱克老夫人"@zh ;
+    hpo:identity "小天狼星的母亲（已故肖像）"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "5"^^xsd:integer .
+
+hp:秋_张
+    a hpo:Wizard ;
+    rdfs:label "秋·张"@zh ;
+    hpo:alias "秋"@zh ;
+    hpo:alias "秋张"@zh ;
+    hpo:house "拉文克劳"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "19"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:米勒娃_麦格
+    a hpo:Wizard ;
+    rdfs:label "米勒娃·麦格"@zh ;
+    hpo:alias "米勒娃"@zh ;
+    hpo:alias "麦格教授"@zh ;
+    hpo:alias "麦格"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "21"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:纳威_隆巴顿
+    a hpo:Wizard ;
+    rdfs:label "纳威·隆巴顿"@zh ;
+    hpo:alias "纳威"@zh ;
+    hpo:alias "隆巴顿"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "25"^^xsd:integer ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+hp:罗恩_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "罗恩·韦斯莱"@zh ;
+    hpo:alias "罗恩"@zh ;
+    hpo:alias "Ron"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:isOrderMember "false"^^xsd:boolean ;
+    hpo:chapterCount "38"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:艾克莫
+    a hpo:Wizard ;
+    rdfs:label "艾克莫"@zh ;
+    hpo:alias "艾克莫小姐"@zh ;
+    hpo:identity "魔法部职员"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "27"^^xsd:integer .
+
+hp:莉莉_波特
+    a hpo:Wizard ;
+    rdfs:label "莉莉·波特"@zh ;
+    hpo:alias "莉莉"@zh ;
+    hpo:alias "莉莉·伊万斯"@zh ;
+    hpo:bloodStatus "麻瓜出身"@zh ;
+    hpo:identity "凤凰社创始成员（已故）"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:莫丽_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "莫丽·韦斯莱"@zh ;
+    hpo:alias "莫丽"@zh ;
+    hpo:alias "韦斯莱夫人"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:莱姆斯_卢平
+    a hpo:Wizard ;
+    rdfs:label "莱姆斯·卢平"@zh ;
+    hpo:alias "月亮脸"@zh ;
+    hpo:alias "莱姆斯"@zh ;
+    hpo:alias "卢平教授"@zh ;
+    hpo:alias "卢平"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "凤凰社成员/狼人"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "22"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:菲利乌斯_弗立维
+    a hpo:Wizard ;
+    rdfs:label "菲利乌斯·弗立维"@zh ;
+    hpo:alias "弗立维"@zh ;
+    hpo:alias "弗立维教授"@zh ;
+    hpo:house "拉文克劳"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "13"^^xsd:integer .
+
+hp:蒙顿格斯_弗莱奇
+    a hpo:Wizard ;
+    rdfs:label "蒙顿格斯·弗莱奇"@zh ;
+    hpo:alias "蒙顿格斯"@zh ;
+    hpo:alias "蒙登格斯"@zh ;
+    hpo:identity "凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:西弗勒斯_斯内普
+    a hpo:Wizard ;
+    rdfs:label "西弗勒斯·斯内普"@zh ;
+    hpo:alias "西弗勒斯"@zh ;
+    hpo:alias "斯内普"@zh ;
+    hpo:alias "斯内普教授"@zh ;
+    hpo:house "斯莱特林"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "21"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:西比尔_特里劳尼
+    a hpo:Wizard ;
+    rdfs:label "西比尔·特里劳尼"@zh ;
+    hpo:alias "特里劳尼"@zh ;
+    hpo:alias "特里劳尼教授"@zh ;
+    hpo:alias "西比尔"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:chapterCount "16"^^xsd:integer ;
+    hpo:firstAppearChapter "12"^^xsd:integer .
+
+hp:西莫_斐尼甘
+    a hpo:Wizard ;
+    rdfs:label "西莫·斐尼甘"@zh ;
+    hpo:alias "西莫"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "15"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:詹姆_波特
+    a hpo:Wizard ;
+    rdfs:label "詹姆·波特"@zh ;
+    hpo:alias "詹姆"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "凤凰社创始成员（已故）"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:贝拉特里克斯_莱斯特兰奇
+    a hpo:Wizard ;
+    rdfs:label "贝拉特里克斯·莱斯特兰奇"@zh ;
+    hpo:alias "贝拉"@zh ;
+    hpo:alias "莱斯特兰奇"@zh ;
+    hpo:alias "贝拉特里克斯"@zh ;
+    hpo:identity "食死徒"@zh ;
+    hpo:chapterCount "8"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:赫敏_格兰杰
+    a hpo:Wizard ;
+    rdfs:label "赫敏·格兰杰"@zh ;
+    hpo:alias "格兰杰小姐"@zh ;
+    hpo:alias "格兰杰"@zh ;
+    hpo:alias "赫敏"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "麻瓜出身"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "35"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:迈克尔_科纳
+    a hpo:Wizard ;
+    rdfs:label "迈克尔·科纳"@zh ;
+    hpo:alias "迈克尔"@zh ;
+    hpo:house "拉文克劳"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:迪安_托马斯
+    a hpo:Wizard ;
+    rdfs:label "迪安·托马斯"@zh ;
+    hpo:alias "迪安"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "16"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:金妮_韦斯莱
+    a hpo:Wizard ;
+    rdfs:label "金妮·韦斯莱"@zh ;
+    hpo:alias "金妮"@zh ;
+    hpo:house "格兰芬多"@zh ;
+    hpo:bloodStatus "纯血"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "26"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:金斯莱_沙克尔
+    a hpo:Wizard ;
+    rdfs:label "金斯莱·沙克尔"@zh ;
+    hpo:alias "金斯莱"@zh ;
+    hpo:alias "沙克尔"@zh ;
+    hpo:identity "傲罗/凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:阿不思_邓布利多
+    a hpo:Wizard ;
+    rdfs:label "阿不思·邓布利多"@zh ;
+    hpo:alias "邓布利多"@zh ;
+    hpo:alias "阿不思"@zh ;
+    hpo:alias "邓布利多教授"@zh ;
+    hpo:bloodStatus "混血"@zh ;
+    hpo:identity "校长"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "36"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:阿拉斯托_穆迪
+    a hpo:Wizard ;
+    rdfs:label "阿拉斯托·穆迪"@zh ;
+    hpo:alias "穆迪"@zh ;
+    hpo:alias "疯眼汉"@zh ;
+    hpo:alias "疯眼汉穆迪"@zh ;
+    hpo:identity "傲罗/凤凰社成员"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "21"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:阿拉贝拉_费格
+    a hpo:Wizard ;
+    rdfs:label "阿拉贝拉·费格"@zh ;
+    hpo:alias "费格太太"@zh ;
+    hpo:bloodStatus "哑炮"@zh ;
+    hpo:identity "哑炮/凤凰社线人"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:阿格斯_费尔奇
+    a hpo:Wizard ;
+    rdfs:label "阿格斯·费尔奇"@zh ;
+    hpo:alias "费尔奇"@zh ;
+    hpo:identity "管理员"@zh ;
+    hpo:chapterCount "13"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:阿米莉亚_博恩斯
+    a hpo:Wizard ;
+    rdfs:label "阿米莉亚·博恩斯"@zh ;
+    hpo:alias "博恩斯"@zh ;
+    hpo:identity "魔法部官员"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "7"^^xsd:integer .
+
+hp:高尔
+    a hpo:Wizard ;
+    rdfs:label "高尔"@zh ;
+    hpo:house "斯莱特林"@zh ;
+    hpo:identity "学生"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:鲁伯_海格
+    a hpo:Wizard ;
+    rdfs:label "鲁伯·海格"@zh ;
+    hpo:alias "海格"@zh ;
+    hpo:alias "鲁伯"@zh ;
+    hpo:identity "教师"@zh ;
+    hpo:isOrderMember "true"^^xsd:boolean ;
+    hpo:chapterCount "24"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+# === Muggle（3 个实例）===
+
+hp:佩妮_德思礼
+    a hpo:Muggle ;
+    rdfs:label "佩妮·德思礼"@zh ;
+    hpo:alias "佩妮姨妈"@zh ;
+    hpo:alias "佩妮"@zh ;
+    hpo:bloodStatus "麻瓜出身"@zh ;
+    hpo:identity "麻瓜"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:弗农_德思礼
+    a hpo:Muggle ;
+    rdfs:label "弗农·德思礼"@zh ;
+    hpo:alias "弗农姨父"@zh ;
+    hpo:alias "弗农姨夫"@zh ;
+    hpo:alias "弗农"@zh ;
+    hpo:alias "德思礼先生"@zh ;
+    hpo:bloodStatus "麻瓜"@zh ;
+    hpo:identity "麻瓜"@zh ;
+    hpo:chapterCount "8"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:达力_德思礼
+    a hpo:Muggle ;
+    rdfs:label "达力·德思礼"@zh ;
+    hpo:alias "达力宝贝"@zh ;
+    hpo:alias "达力"@zh ;
+    hpo:bloodStatus "麻瓜"@zh ;
+    hpo:identity "麻瓜"@zh ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+# === HouseElf（3 个实例）===
+
+hp:克利切
+    a hpo:HouseElf ;
+    rdfs:label "克利切"@zh ;
+    hpo:identity "家养小精灵"@zh ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:多比
+    a hpo:HouseElf ;
+    rdfs:label "多比"@zh ;
+    hpo:identity "家养小精灵"@zh ;
+    hpo:chapterCount "8"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:闪闪
+    a hpo:HouseElf ;
+    rdfs:label "闪闪"@zh ;
+    hpo:identity "家养小精灵"@zh ;
+    hpo:chapterCount "23"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+# === Centaur（1 个实例）===
+
+hp:费伦泽
+    a hpo:Centaur ;
+    rdfs:label "费伦泽"@zh ;
+    hpo:identity "马人"@zh ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "26"^^xsd:integer .
+
+# === Giant（1 个实例）===
+
+hp:格洛普
+    a hpo:Giant ;
+    rdfs:label "格洛普"@zh ;
+    hpo:identity "巨人/海格的弟弟"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "30"^^xsd:integer .
+
+# === Ghost（3 个实例）===
+
+hp:宾斯教授
+    a hpo:Ghost ;
+    rdfs:label "宾斯教授"@zh ;
+    hpo:alias "宾斯"@zh ;
+    hpo:identity "教师/鬼魂"@zh ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "12"^^xsd:integer .
+
+hp:尼克
+    a hpo:Ghost ;
+    rdfs:label "尼克"@zh ;
+    hpo:alias "差点没头的尼克"@zh ;
+    hpo:identity "鬼魂"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+hp:胖夫人
+    a hpo:Ghost ;
+    rdfs:label "胖夫人"@zh ;
+    hpo:identity "格兰芬多塔楼入口画像"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+# === School（1 个实例）===
+
+hp:霍格沃茨魔法学校
+    a hpo:School ;
+    rdfs:label "霍格沃茨魔法学校"@zh ;
+    hpo:alias "霍格沃茨魔法学校"@zh ;
+    hpo:alias "霍格沃茨"@zh ;
+    hpo:chapterCount "34"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+# === Academy（4 个实例）===
+
+hp:拉文克劳
+    a hpo:Academy ;
+    rdfs:label "拉文克劳"@zh ;
+    hpo:alias "拉文克劳学院"@zh ;
+    hpo:alias "拉文克劳"@zh ;
+    hpo:chapterCount "15"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:斯莱特林
+    a hpo:Academy ;
+    rdfs:label "斯莱特林"@zh ;
+    hpo:alias "斯莱特林学院"@zh ;
+    hpo:alias "斯莱特林"@zh ;
+    hpo:chapterCount "19"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:格兰芬多
+    a hpo:Academy ;
+    rdfs:label "格兰芬多"@zh ;
+    hpo:alias "格兰芬多学院"@zh ;
+    hpo:alias "格兰芬多"@zh ;
+    hpo:chapterCount "21"^^xsd:integer ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+hp:赫奇帕奇
+    a hpo:Academy ;
+    rdfs:label "赫奇帕奇"@zh ;
+    hpo:alias "赫奇帕奇学院"@zh ;
+    hpo:alias "赫奇帕奇"@zh ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+# === CriminalOrganization（2 个实例）===
+
+hp:阿兹卡班
+    a hpo:CriminalOrganization ;
+    rdfs:label "阿兹卡班"@zh ;
+    hpo:alias "阿兹卡班"@zh ;
+    hpo:chapterCount "16"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:食死徒
+    a hpo:CriminalOrganization ;
+    rdfs:label "食死徒"@zh ;
+    hpo:alias "食死徒"@zh ;
+    hpo:chapterCount "16"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+# === MagicalInstitution（4 个实例）===
+
+hp:傲罗办公室
+    a hpo:MagicalInstitution ;
+    rdfs:label "傲罗办公室"@zh ;
+    hpo:alias "傲罗办公室"@zh ;
+    hpo:alias "傲罗"@zh ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:古灵阁
+    a hpo:MagicalInstitution ;
+    rdfs:label "古灵阁"@zh ;
+    hpo:alias "古灵阁"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:圣芒戈魔法伤病医院
+    a hpo:MagicalInstitution ;
+    rdfs:label "圣芒戈魔法伤病医院"@zh ;
+    hpo:alias "圣芒戈魔法伤病医院"@zh ;
+    hpo:alias "圣芒戈"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "7"^^xsd:integer .
+
+hp:魔法部
+    a hpo:MagicalInstitution ;
+    rdfs:label "魔法部"@zh ;
+    hpo:alias "魔法部"@zh ;
+    hpo:chapterCount "35"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+# === Club（2 个实例）===
+
+hp:凤凰社
+    a hpo:Club ;
+    rdfs:label "凤凰社"@zh ;
+    hpo:alias "凤凰社"@zh ;
+    hpo:chapterCount "20"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:邓布利多军
+    a hpo:Club ;
+    rdfs:label "邓布利多军"@zh ;
+    hpo:alias "邓布利多军"@zh ;
+    hpo:alias "DA"@zh ;
+    hpo:alias "DA组织"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+# === Residence（3 个实例）===
+
+hp:女贞路4号
+    a hpo:Residence ;
+    rdfs:label "女贞路4号"@zh ;
+    hpo:alias "女贞路 4 号"@zh ;
+    hpo:alias "女贞路4号"@zh ;
+    hpo:alias "女贞路四号"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+hp:格里莫广场12号
+    a hpo:Residence ;
+    rdfs:label "格里莫广场12号"@zh ;
+    hpo:alias "格里莫广场12号"@zh ;
+    hpo:alias "格里莫广场"@zh ;
+    hpo:chapterCount "15"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:陋居
+    a hpo:Residence ;
+    rdfs:label "陋居"@zh ;
+    hpo:alias "陋居"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+# === BuildingInSchool（3 个实例）===
+
+hp:格兰芬多公共休息室
+    a hpo:BuildingInSchool ;
+    rdfs:label "格兰芬多公共休息室"@zh ;
+    hpo:alias "格兰芬多公共休息室"@zh ;
+    hpo:alias "格兰芬多塔楼"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+hp:邓布利多办公室
+    a hpo:BuildingInSchool ;
+    rdfs:label "邓布利多办公室"@zh ;
+    hpo:alias "邓布利多办公室"@zh ;
+    hpo:alias "校长办公室"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:霍格沃茨城堡
+    a hpo:BuildingInSchool ;
+    rdfs:label "霍格沃茨城堡"@zh ;
+    hpo:alias "霍格沃茨"@zh ;
+    hpo:alias "霍格沃茨城堡"@zh ;
+    hpo:chapterCount "34"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+# === PublicPlace（6 个实例）===
+
+hp:三把扫帚
+    a hpo:PublicPlace ;
+    rdfs:label "三把扫帚"@zh ;
+    hpo:alias "三把扫帚"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:国王十字车站
+    a hpo:PublicPlace ;
+    rdfs:label "国王十字车站"@zh ;
+    hpo:alias "国王十字"@zh ;
+    hpo:alias "国王十字车站"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:对角巷
+    a hpo:PublicPlace ;
+    rdfs:label "对角巷"@zh ;
+    hpo:alias "对角巷"@zh ;
+    hpo:alias "斜角巷"@zh ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+hp:猪头酒吧
+    a hpo:PublicPlace ;
+    rdfs:label "猪头酒吧"@zh ;
+    hpo:alias "猪头吧"@zh ;
+    hpo:alias "猪头酒吧"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:霍格沃茨特快列车
+    a hpo:PublicPlace ;
+    rdfs:label "霍格沃茨特快列车"@zh ;
+    hpo:alias "霍格沃茨特快"@zh ;
+    hpo:alias "霍格沃茨特快列车"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+hp:霍格莫德村
+    a hpo:PublicPlace ;
+    rdfs:label "霍格莫德村"@zh ;
+    hpo:alias "霍格莫德村"@zh ;
+    hpo:alias "霍格莫德"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+# === MagicalLocation（3 个实例）===
+
+hp:有求必应屋
+    a hpo:MagicalLocation ;
+    rdfs:label "有求必应屋"@zh ;
+    hpo:alias "有求必应屋"@zh ;
+    hpo:chapterCount "4"^^xsd:integer ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:神秘事务司
+    a hpo:MagicalLocation ;
+    rdfs:label "神秘事务司"@zh ;
+    hpo:alias "神秘事务司"@zh ;
+    hpo:chapterCount "14"^^xsd:integer ;
+    hpo:firstAppearChapter "7"^^xsd:integer .
+
+hp:禁林
+    a hpo:MagicalLocation ;
+    rdfs:label "禁林"@zh ;
+    hpo:alias "禁林"@zh ;
+    hpo:chapterCount "13"^^xsd:integer ;
+    hpo:firstAppearChapter "11"^^xsd:integer .
+
+# === Token（3 个实例）===
+
+hp:冥想盆
+    a hpo:Token ;
+    rdfs:label "冥想盆"@zh ;
+    hpo:alias "冥想盆"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:活点地图
+    a hpo:Token ;
+    rdfs:label "活点地图"@zh ;
+    hpo:alias "活点地图"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:记忆球
+    a hpo:Token ;
+    rdfs:label "记忆球"@zh ;
+    hpo:alias "记忆球"@zh ;
+    hpo:chapterCount "2"^^xsd:integer ;
+    hpo:firstAppearChapter "10"^^xsd:integer .
+
+# === MagicalArtifact（8 个实例）===
+
+hp:凤凰福克斯
+    a hpo:MagicalArtifact ;
+    rdfs:label "凤凰福克斯"@zh ;
+    hpo:alias "福克斯"@zh ;
+    hpo:alias "凤凰福克斯"@zh ;
+    hpo:chapterCount "6"^^xsd:integer ;
+    hpo:firstAppearChapter "8"^^xsd:integer .
+
+hp:守护神
+    a hpo:MagicalArtifact ;
+    rdfs:label "守护神"@zh ;
+    hpo:alias "守护神咒"@zh ;
+    hpo:alias "守护神"@zh ;
+    hpo:chapterCount "8"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+hp:火弩箭
+    a hpo:MagicalArtifact ;
+    rdfs:label "火弩箭"@zh ;
+    hpo:alias "火弩箭"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:费力博士的飞天扫帚
+    a hpo:MagicalArtifact ;
+    rdfs:label "费力博士的飞天扫帚"@zh ;
+    hpo:alias "费力博士的飞天扫帚"@zh ;
+    hpo:alias "飞天扫帚"@zh ;
+    hpo:alias "光轮"@zh ;
+    hpo:alias "光轮2000"@zh ;
+    hpo:alias "光轮2001"@zh ;
+    hpo:alias "火弩箭"@zh ;
+    hpo:chapterCount "19"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:速记羽毛笔
+    a hpo:MagicalArtifact ;
+    rdfs:label "速记羽毛笔"@zh ;
+    hpo:alias "速记羽毛笔"@zh ;
+    hpo:alias "快速速录笔"@zh ;
+    hpo:chapterCount "1"^^xsd:integer ;
+    hpo:firstAppearChapter "25"^^xsd:integer .
+
+hp:隐形衣
+    a hpo:MagicalArtifact ;
+    rdfs:label "隐形衣"@zh ;
+    hpo:alias "隐形衣"@zh ;
+    hpo:chapterCount "10"^^xsd:integer ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+hp:预言球
+    a hpo:MagicalArtifact ;
+    rdfs:label "预言球"@zh ;
+    hpo:alias "预言球"@zh ;
+    hpo:alias "预言"@zh ;
+    hpo:chapterCount "22"^^xsd:integer ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:黑色羽毛笔_用刑笔
+    a hpo:MagicalArtifact ;
+    rdfs:label "黑色羽毛笔（用刑笔）"@zh ;
+    hpo:alias "黑色羽毛笔（用刑笔）"@zh ;
+    hpo:alias "黑色羽毛笔"@zh ;
+    hpo:alias "黑色羽毛"@zh ;
+    hpo:alias "黑羽毛笔"@zh ;
+    hpo:chapterCount "1"^^xsd:integer ;
+    hpo:firstAppearChapter "13"^^xsd:integer .
+
+# === Portkey（1 个实例）===
+
+hp:门钥匙
+    a hpo:Portkey ;
+    rdfs:label "门钥匙"@zh ;
+    hpo:alias "门钥匙"@zh ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+# === OtherItem（5 个实例）===
+
+hp:克鲁姆斯香克斯
+    a hpo:OtherItem ;
+    rdfs:label "克鲁姆斯香克斯"@zh ;
+    hpo:alias "克鲁姆斯香克斯"@zh ;
+    hpo:alias "克鲁克山"@zh ;
+    hpo:chapterCount "13"^^xsd:integer ;
+    hpo:firstAppearChapter "4"^^xsd:integer .
+
+hp:巫师棋
+    a hpo:OtherItem ;
+    rdfs:label "巫师棋"@zh ;
+    hpo:alias "巫师棋"@zh ;
+    hpo:chapterCount "3"^^xsd:integer ;
+    hpo:firstAppearChapter "24"^^xsd:integer .
+
+hp:洛丽丝夫人
+    a hpo:OtherItem ;
+    rdfs:label "洛丽丝夫人"@zh ;
+    hpo:alias "洛丽丝夫人"@zh ;
+    hpo:chapterCount "5"^^xsd:integer ;
+    hpo:firstAppearChapter "14"^^xsd:integer .
+
+hp:海德薇
+    a hpo:OtherItem ;
+    rdfs:label "海德薇"@zh ;
+    hpo:alias "海德薇"@zh ;
+    hpo:chapterCount "12"^^xsd:integer ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:黄油啤酒
+    a hpo:OtherItem ;
+    rdfs:label "黄油啤酒"@zh ;
+    hpo:alias "黄油啤酒"@zh ;
+    hpo:chapterCount "9"^^xsd:integer ;
+    hpo:firstAppearChapter "5"^^xsd:integer .
+
+# === Battle（2 个实例）===
+
+hp:神秘事务司之战
+    a hpo:Battle ;
+    rdfs:label "神秘事务司之战"@zh .
+
+hp:邓布利多与伏地魔决斗
+    a hpo:Battle ;
+    rdfs:label "邓布利多与伏地魔决斗"@zh .
+
+# === Trial（1 个实例）===
+
+hp:哈利受审
+    a hpo:Trial ;
+    rdfs:label "哈利受审"@zh .
+
+# === Gathering（2 个实例）===
+
+hp:凤凰社总部首聚
+    a hpo:Gathering ;
+    rdfs:label "凤凰社总部首聚"@zh .
+
+hp:格里莫广场圣诞节
+    a hpo:Gathering ;
+    rdfs:label "格里莫广场圣诞节"@zh .
+
+# === Examination（1 个实例）===
+
+hp:O.W.L.考试
+    a hpo:Examination ;
+    rdfs:label "O.W.L.考试"@zh .
+
+# === Attack（4 个实例）===
+
+hp:亚瑟_韦斯莱遇袭
+    a hpo:Attack ;
+    rdfs:label "亚瑟·韦斯莱遇袭"@zh .
+
+hp:伏地魔计划失败
+    a hpo:Attack ;
+    rdfs:label "伏地魔计划失败"@zh .
+
+hp:海格遇袭事件
+    a hpo:Attack ;
+    rdfs:label "海格遇袭事件"@zh .
+
+hp:达力遇袭事件
+    a hpo:Attack ;
+    rdfs:label "达力遇袭事件"@zh .
+
+# === OtherEvent（20 个实例）===
+
+hp:DA成立
+    a hpo:OtherEvent ;
+    rdfs:label "DA成立"@zh .
+
+hp:丢失的预言
+    a hpo:OtherEvent ;
+    rdfs:label "丢失的预言"@zh .
+
+hp:乌姆里奇发现DA
+    a hpo:OtherEvent ;
+    rdfs:label "乌姆里奇发现DA"@zh .
+
+hp:乌姆里奇审查
+    a hpo:OtherEvent ;
+    rdfs:label "乌姆里奇审查"@zh .
+
+hp:乌姆里奇当上校长
+    a hpo:OtherEvent ;
+    rdfs:label "乌姆里奇当上校长"@zh .
+
+hp:乌姆里奇被抓
+    a hpo:OtherEvent ;
+    rdfs:label "乌姆里奇被抓"@zh .
+
+hp:前往神秘事务司
+    a hpo:OtherEvent ;
+    rdfs:label "前往神秘事务司"@zh .
+
+hp:小天狼星之死
+    a hpo:OtherEvent ;
+    rdfs:label "小天狼星之死"@zh .
+
+hp:弗雷德乔治退学
+    a hpo:OtherEvent ;
+    rdfs:label "弗雷德乔治退学"@zh .
+
+hp:教育令颁布
+    a hpo:OtherEvent ;
+    rdfs:label "教育令颁布"@zh .
+
+hp:斯内普大脑封闭术训练
+    a hpo:OtherEvent ;
+    rdfs:label "斯内普大脑封闭术训练"@zh .
+
+hp:海格回归
+    a hpo:OtherEvent ;
+    rdfs:label "海格回归"@zh .
+
+hp:海格带回格洛普
+    a hpo:OtherEvent ;
+    rdfs:label "海格带回格洛普"@zh .
+
+hp:海格留用察看
+    a hpo:OtherEvent ;
+    rdfs:label "海格留用察看"@zh .
+
+hp:特里劳尼被解雇
+    a hpo:OtherEvent ;
+    rdfs:label "特里劳尼被解雇"@zh .
+
+hp:费伦泽担任占卜课老师
+    a hpo:OtherEvent ;
+    rdfs:label "费伦泽担任占卜课老师"@zh .
+
+hp:邓布利多出逃
+    a hpo:OtherEvent ;
+    rdfs:label "邓布利多出逃"@zh .
+
+hp:邓布利多逃走
+    a hpo:OtherEvent ;
+    rdfs:label "邓布利多逃走"@zh .
+
+hp:预言球破碎
+    a hpo:OtherEvent ;
+    rdfs:label "预言球破碎"@zh .
+
+hp:马人愤怒
+    a hpo:OtherEvent ;
+    rdfs:label "马人愤怒"@zh .
+
+# === Book（19 个实例）===
+
+hp:不列颠和爱尔兰的魁地奇球队
+    a hpo:Book ;
+    rdfs:label "不列颠和爱尔兰的魁地奇球队"@zh ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:与麻瓜交往二十五法
+    a hpo:Book ;
+    rdfs:label "与麻瓜交往二十五法"@zh ;
+    hpo:firstAppearChapter "25"^^xsd:integer .
+
+hp:为什么没有人听阿不思_邓布利多说话
+    a hpo:Book ;
+    rdfs:label "为什么没有人听阿不思·邓布利多说话"@zh ;
+    hpo:firstAppearChapter "38"^^xsd:integer .
+
+hp:以毒攻毒集
+    a hpo:Book ;
+    rdfs:label "以毒攻毒集"@zh ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:吉德罗_洛哈特教你清除家庭害虫
+    a hpo:Book ;
+    rdfs:label "吉德罗·洛哈特教你清除家庭害虫"@zh ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:咒语成就
+    a hpo:Book ;
+    rdfs:label "咒语成就"@zh ;
+    hpo:firstAppearChapter "31"^^xsd:integer .
+
+hp:实用防御魔法及其对黑魔法的克制
+    a hpo:Book ;
+    rdfs:label "实用防御魔法及其对黑魔法的克制"@zh ;
+    hpo:firstAppearChapter "23"^^xsd:integer .
+
+hp:数字占卜学新原理
+    a hpo:Book ;
+    rdfs:label "数字占卜学新原理"@zh ;
+    hpo:firstAppearChapter "23"^^xsd:integer .
+
+hp:普通咒语及解招
+    a hpo:Book ;
+    rdfs:label "普通咒语及解招"@zh ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:智胜黑魔法
+    a hpo:Book ;
+    rdfs:label "智胜黑魔法"@zh ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:生而高贵：巫师家谱
+    a hpo:Book ;
+    rdfs:label "生而高贵：巫师家谱"@zh ;
+    hpo:firstAppearChapter "6"^^xsd:integer .
+
+hp:神秘人篡夺权势的最后努力
+    a hpo:Book ;
+    rdfs:label "神秘人篡夺权势的最后努力"@zh ;
+    hpo:firstAppearChapter "38"^^xsd:integer .
+
+hp:自卫咒语集
+    a hpo:Book ;
+    rdfs:label "自卫咒语集"@zh ;
+    hpo:firstAppearChapter "18"^^xsd:integer .
+
+hp:解梦指南
+    a hpo:Book ;
+    rdfs:label "解梦指南"@zh ;
+    hpo:firstAppearChapter "12"^^xsd:integer .
+
+hp:飞天扫帚大全
+    a hpo:Book ;
+    rdfs:label "飞天扫帚大全"@zh ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+hp:魔咒成就
+    a hpo:Book ;
+    rdfs:label "魔咒成就"@zh ;
+    hpo:firstAppearChapter "31"^^xsd:integer .
+
+hp:魔法图符集
+    a hpo:Book ;
+    rdfs:label "魔法图符集"@zh ;
+    hpo:firstAppearChapter "26"^^xsd:integer .
+
+hp:魔法字音表
+    a hpo:Book ;
+    rdfs:label "魔法字音表"@zh ;
+    hpo:firstAppearChapter "26"^^xsd:integer .
+
+hp:魔法部应该告诉我们什么
+    a hpo:Book ;
+    rdfs:label "魔法部应该告诉我们什么"@zh ;
+    hpo:firstAppearChapter "38"^^xsd:integer .
+
+# === Textbook（7 个实例）===
+
+hp:中级变形术
+    a hpo:Textbook ;
+    rdfs:label "中级变形术"@zh ;
+    hpo:firstAppearChapter "31"^^xsd:integer .
+
+hp:亚洲抗毒大全
+    a hpo:Textbook ;
+    rdfs:label "亚洲抗毒大全"@zh ;
+    hpo:firstAppearChapter "16"^^xsd:integer .
+
+hp:千种神奇药草及蕈类
+    a hpo:Textbook ;
+    rdfs:label "千种神奇药草及蕈类"@zh ;
+    hpo:firstAppearChapter "17"^^xsd:integer .
+
+hp:标准咒语_五级
+    a hpo:Textbook ;
+    rdfs:label "标准咒语·五级"@zh .
+
+hp:神奇动物在哪里
+    a hpo:Textbook ;
+    rdfs:label "神奇动物在哪里"@zh ;
+    hpo:firstAppearChapter "27"^^xsd:integer .
+
+hp:霍格沃茨：一段校史
+    a hpo:Textbook ;
+    rdfs:label "霍格沃茨：一段校史"@zh ;
+    hpo:firstAppearChapter "17"^^xsd:integer .
+
+hp:魔法防御理论
+    a hpo:Textbook ;
+    rdfs:label "魔法防御理论"@zh ;
+    hpo:firstAppearChapter "9"^^xsd:integer .
+
+# === Periodical（4 个实例）===
+
+hp:唱唱反调
+    a hpo:Periodical ;
+    rdfs:label "唱唱反调"@zh ;
+    hpo:firstAppearChapter "7"^^xsd:integer .
+
+hp:巫师周刊
+    a hpo:Periodical ;
+    rdfs:label "巫师周刊"@zh ;
+    hpo:firstAppearChapter "22"^^xsd:integer .
+
+hp:预言家日报
+    a hpo:Periodical ;
+    rdfs:label "预言家日报"@zh ;
+    hpo:firstAppearChapter "1"^^xsd:integer .
+
+hp:预言家日报星期天版
+    a hpo:Periodical ;
+    rdfs:label "预言家日报星期天版"@zh .
+
+# === Report（1 个实例）===
+
+hp:独家采访哈利_波特
+    a hpo:Report ;
+    rdfs:label "独家采访哈利·波特"@zh ;
+    hpo:firstAppearChapter "38"^^xsd:integer .
+
+# === OtherWork（14 个实例）===
+
+hp:国际保密法
+    a hpo:OtherWork ;
+    rdfs:label "国际保密法"@zh ;
+    hpo:firstAppearChapter "3"^^xsd:integer .
+
+hp:威森加摩权利宪章
+    a hpo:OtherWork ;
+    rdfs:label "威森加摩权利宪章"@zh ;
+    hpo:firstAppearChapter "8"^^xsd:integer .
+
+hp:对未成年巫师加以合理约束法
+    a hpo:OtherWork ;
+    rdfs:label "对未成年巫师加以合理约束法"@zh ;
+    hpo:firstAppearChapter "2"^^xsd:integer .
+
+hp:禁止动物培育实验法
+    a hpo:OtherWork ;
+    rdfs:label "禁止动物培育实验法"@zh ;
+    hpo:firstAppearChapter "7"^^xsd:integer .
+
+hp:第二十七号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十七号教育令"@zh ;
+    hpo:firstAppearChapter "26"^^xsd:integer .
+
+hp:第二十三号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十三号教育令"@zh ;
+    hpo:firstAppearChapter "15"^^xsd:integer .
+
+hp:第二十九号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十九号教育令"@zh ;
+    hpo:firstAppearChapter "28"^^xsd:integer .
+
+hp:第二十二号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十二号教育令"@zh ;
+    hpo:firstAppearChapter "26"^^xsd:integer .
+
+hp:第二十五号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十五号教育令"@zh ;
+    hpo:firstAppearChapter "19"^^xsd:integer .
+
+hp:第二十八号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十八号教育令"@zh ;
+    hpo:firstAppearChapter "28"^^xsd:integer .
+
+hp:第二十六号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十六号教育令"@zh ;
+    hpo:firstAppearChapter "25"^^xsd:integer .
+
+hp:第二十四号教育令
+    a hpo:OtherWork ;
+    rdfs:label "第二十四号教育令"@zh ;
+    hpo:firstAppearChapter "17"^^xsd:integer .
+
+hp:鞭刑批准令
+    a hpo:OtherWork ;
+    rdfs:label "鞭刑批准令"@zh ;
+    hpo:firstAppearChapter "29"^^xsd:integer .
+
+hp:魔法部令
+    a hpo:OtherWork ;
+    rdfs:label "魔法部令"@zh ;
+    hpo:firstAppearChapter "25"^^xsd:integer .
+
+# ============================================================
+# 汇总：共 194 个实例（v1.1 中 194 个，v1.2 因 2 个误归 Place 的实体被剔除：魔法部, 圣芒戈魔法伤病医院）
+# ============================================================
